@@ -27,3 +27,20 @@ app.use('/api/users', createProxyMiddleware({
   pathRewrite: { '^/api/users': '/users' },
   onProxyReq: fixRequestBody
 }));
+
+
+// Interactions
+app.use(['/api/posts/*/like', '/api/posts/*/comment', '/api/posts/*/comments'], createProxyMiddleware({
+  target: process.env.INTERACTION_SERVICE_URL,
+  changeOrigin: true,
+  pathRewrite: { '^/api': '/interactions' },
+  onProxyReq: fixRequestBody
+}));
+
+// Posts
+app.use('/api/posts', createProxyMiddleware({
+  target: process.env.POST_SERVICE_URL,
+  changeOrigin: true,
+  pathRewrite: { '^/api/posts': '/posts' },
+  onProxyReq: fixRequestBody
+}));
